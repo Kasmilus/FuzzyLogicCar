@@ -41,7 +41,7 @@ public class CarInferenceSystem : MonoBehaviour {
     FuzzySet fsLeftVelocityInput = new FuzzySet("Left",
         new TrapezoidalFunction(-3.5f, -2.2f, -0.8f, 0.0f));
     FuzzySet fsZeroVelocityInput = new FuzzySet("Zero",
-        new TrapezoidalFunction(-0.5f, 0.0f, 0.5f));
+        new TrapezoidalFunction(-0.4f, 0.0f, 0.4f));
     FuzzySet fsRightVelocityInput = new FuzzySet("Right",
         new TrapezoidalFunction(0.0f, 0.8f, 2.2f, 3.5f));
     FuzzySet fsLargeRightVelocityInput = new FuzzySet("LargeRight",
@@ -57,15 +57,15 @@ public class CarInferenceSystem : MonoBehaviour {
 
     // linguistic labels (MFs) that compose the input distance
     FuzzySet fsFarLeftDistance = new FuzzySet("FarLeft",
-        new TrapezoidalFunction(-4.5f, -2.8f, TrapezoidalFunction.EdgeType.Right));
+        new TrapezoidalFunction(-5.25f, -2.8f, TrapezoidalFunction.EdgeType.Right));
     FuzzySet fsLeftDistance = new FuzzySet("Left",
-        new TrapezoidalFunction(-3.8f, -2.5f, -1.5f, -0.5f));
+        new TrapezoidalFunction(-4.0f, -2.5f, -1.5f, -0.01f));
     FuzzySet fsZeroDistance = new FuzzySet("Zero",
         new TrapezoidalFunction(-1.0f, -0.25f, 0.25f, 1.0f));
     FuzzySet fsRightDistance = new FuzzySet("Right",
-        new TrapezoidalFunction(0.5f, 1.5f, 2.5f, 3.8f));
+        new TrapezoidalFunction(0.01f, 1.5f, 2.5f, 4.0f));
     FuzzySet fsFarRightDistance = new FuzzySet("FarRight",
-        new TrapezoidalFunction(2.8f, 4.5f, TrapezoidalFunction.EdgeType.Left));
+        new TrapezoidalFunction(2.8f, 5.25f, TrapezoidalFunction.EdgeType.Left));
 
     // Fuzzy set - Input Distance
     LinguisticVariable lvInputDistance = new LinguisticVariable("InputDistance", -6, 6);
@@ -77,18 +77,19 @@ public class CarInferenceSystem : MonoBehaviour {
 
     // Linguistic labels (MFs) that compose the output velocity
     FuzzySet fsLargeLeftVelocityOutput = new FuzzySet("LargeLeftOutput",
-        new TrapezoidalFunction(-4.5f, -2.1f, TrapezoidalFunction.EdgeType.Right));
+        new TrapezoidalFunction(-9.0f, -4.2f, TrapezoidalFunction.EdgeType.Right));
     FuzzySet fsLeftVelocityOutput = new FuzzySet("LeftOutput",
-        new TrapezoidalFunction(-3.0f, -1.5f, 0.0f));
+        new TrapezoidalFunction(-6.0f, -3.0f, 0.0f));
     FuzzySet fsZeroVelocityOutput = new FuzzySet("ZeroOutput",
-        new TrapezoidalFunction(-0.5f, 0.0f, 0.5f));
+        new TrapezoidalFunction(-1.75f, 0.0f, 1.75f));
     FuzzySet fsRightVelocityOutput = new FuzzySet("RightOutput",
-        new TrapezoidalFunction(0.0f, 1.5f, 3.0f));
+        new TrapezoidalFunction(0.0f, 3.0f, 6.0f));
     FuzzySet fsLargeRightVelocityOutput = new FuzzySet("LargeRightOutput",
-        new TrapezoidalFunction(2.1f, 4.5f, TrapezoidalFunction.EdgeType.Left));
+        new TrapezoidalFunction(4.2f, 9.0f, TrapezoidalFunction.EdgeType.Left));
 
     // Fuzzy set - Output Velocity
-    LinguisticVariable lvOutputVelocity = new LinguisticVariable("OutputVelocity", -5.0f, 5.0f);
+    float boundary = (isHastyDriver) ? 16.0f : 10.0f;
+    LinguisticVariable lvOutputVelocity = new LinguisticVariable("OutputVelocity", -boundary, boundary);
     lvOutputVelocity.AddLabel(fsLargeLeftVelocityOutput);
     lvOutputVelocity.AddLabel(fsLeftVelocityOutput);
     lvOutputVelocity.AddLabel(fsZeroVelocityOutput);

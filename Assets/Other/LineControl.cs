@@ -20,6 +20,8 @@ public class LineControl : MonoBehaviour {
   // --- Private: --- //
   // Default speed
   private float speed = 10;
+  private Vector3 lastMousePos;
+  private bool wasMousePressed;
   //Spawning new lines
   private Vector3 spawnPos;
   private float timer;
@@ -28,6 +30,7 @@ public class LineControl : MonoBehaviour {
     spawnPos = FirstLineSpawnTransform.localPosition;
     spawnPos.z *= transform.localScale.z;
     timer = 0;
+    wasMousePressed = false;
   }
 
   void Update () {
@@ -63,9 +66,22 @@ public class LineControl : MonoBehaviour {
     // Horizontal input moving the line
     float inputHor = Input.GetAxis("Horizontal");
     if (inputHor != 0) {
-      transform.position = transform.position + new Vector3(inputHor * Time.deltaTime * speed, 0, 0);
+      transform.position += new Vector3(inputHor * Time.deltaTime * speed, 0, 0);
     }
-		
-	}
+
+    if (Input.GetMouseButton(0)) {
+      if(Input.mousePosition != lastMousePos && wasMousePressed) {
+        transform.position += new Vector3((Input.mousePosition - lastMousePos).x * Time.deltaTime, 0, 0);
+      }
+      lastMousePos = Input.mousePosition;
+    }
+    if (Input.GetMouseButtonDown(0)) {
+      wasMousePressed = true;
+    }
+    if (Input.GetMouseButtonUp(0)) {
+      wasMousePressed = false;
+    }
+
+  }
 
 }

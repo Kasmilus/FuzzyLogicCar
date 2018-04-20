@@ -50,9 +50,12 @@ public class CarMovement : MonoBehaviour {
 
     // UI
     if (timer > 0.15) {
-      distanceText.text = "Distance: " + distance.ToString("F2");
-      velocityText.text = "Velocity: " + velocity.ToString("F2");
-      outputText.text = "Output: " + response.ToString("F2");
+      string whiteSpace = (distance >= 0) ? " " : ""; 
+      distanceText.text = "Distance: " + whiteSpace + distance.ToString("F2") + "m";
+      whiteSpace = (velocity >= 0) ? " " : "";
+      velocityText.text = "Velocity: " + whiteSpace + velocity.ToString("F2") + "m/s";
+      whiteSpace = (response >= 0) ? " " : "";
+      outputText.text = "Output: " + whiteSpace + response.ToString("F2") + "m/s";
 
       timer = 0;
     }
