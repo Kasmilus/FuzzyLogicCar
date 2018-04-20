@@ -1,0 +1,69 @@
+[System]
+Name='FuzzyCar'
+Type='mamdani'
+Version=2.0
+NumInputs=2
+NumOutputs=1
+NumRules=25
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='Velocity'
+Range=[-5 5]
+NumMFs=5
+MF1='Large_Left':'trapmf',[-7.251 -5.25 -4 -2.749]
+MF2='Left':'trapmf',[-3.5 -1.8 -1 0]
+MF3='Zero':'trimf',[-0.5 2.776e-17 0.5]
+MF4='Right':'trapmf',[0 1 1.8 3.5]
+MF5='Large_Right':'trapmf',[2.749 4 5.25 7.251]
+
+[Input2]
+Name='Distance'
+Range=[-6 6]
+NumMFs=5
+MF1='Far_Left':'trapmf',[-9.08 -6.32 -4.5 -2.87]
+MF2='Left':'trapmf',[-3.8 -2.5 -1.5 -0.2]
+MF3='Zero':'trapmf',[-1 -0.25 0.25 1]
+MF4='Right':'trapmf',[0.2 1.5 2.5 3.8]
+MF5='Far_Right':'trapmf',[3.231 4.5 6.28 8.719]
+
+[Output1]
+Name='OutputVelocity'
+Range=[-5 5]
+NumMFs=5
+MF1='Large_Left':'trapmf',[-7.82 -5.28 -4.575 -2.11]
+MF2='Left':'trimf',[-3 -1.5 2.037e-05]
+MF3='Zero':'trimf',[-0.3499 -3.469e-17 0.3499]
+MF4='Right':'trimf',[-2.037e-05 1.5 3]
+MF5='Large_Right':'trapmf',[2.11 4.575 5.28 7.82]
+
+[Rules]
+5 5, 1 (1) : 1
+4 5, 1 (1) : 1
+3 5, 1 (1) : 1
+2 5, 2 (1) : 1
+1 5, 3 (1) : 1
+5 4, 1 (1) : 1
+4 4, 1 (1) : 1
+3 4, 2 (1) : 1
+2 4, 3 (1) : 1
+1 4, 4 (1) : 1
+5 3, 1 (1) : 1
+4 3, 2 (1) : 1
+3 3, 3 (1) : 1
+2 3, 4 (1) : 1
+1 3, 5 (1) : 1
+5 2, 2 (1) : 1
+4 2, 3 (1) : 1
+3 2, 4 (1) : 1
+2 2, 5 (1) : 1
+1 2, 5 (1) : 1
+5 1, 3 (1) : 1
+4 1, 4 (1) : 1
+3 1, 5 (1) : 1
+2 1, 5 (1) : 1
+1 1, 5 (1) : 1

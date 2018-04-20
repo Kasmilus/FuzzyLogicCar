@@ -38,7 +38,7 @@ public class CarMovement : MonoBehaviour {
       distance = -distance;
 
     // Velocity
-    velocity = (transform.position.x - lastFramePosX) / Time.deltaTime;
+    velocity = (transform.position.x - lastFramePosX);
     lastFramePosX = transform.position.x;
 
     // Pass variables to FIS
@@ -46,7 +46,7 @@ public class CarMovement : MonoBehaviour {
     float response = carIS.CalculateOutput();
 
     // Move car
-    transform.position += new Vector3(response * Time.deltaTime * Time.deltaTime, 0, 0);
+    transform.position += new Vector3(response * Time.deltaTime, 0, 0);
 
     // UI
     if (timer > 0.15) {
