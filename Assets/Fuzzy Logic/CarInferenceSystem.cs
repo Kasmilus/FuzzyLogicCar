@@ -5,13 +5,9 @@ using AForge.Fuzzy;
 
 public class CarInferenceSystem : MonoBehaviour {
 
-
+  // FIS
   private InferenceSystem IS;
   private Database fuzzyDB;
-
-  // Inputs
-  private float distance;
-  private float velocity;
 
   // Variables controlling FIS(for setting values in editor)
   public bool isRedCar;
@@ -25,30 +21,25 @@ public class CarInferenceSystem : MonoBehaviour {
     SetupRuleBase(isRedCar);
 
   }
-	
-
-	void Update () {
-
-  }
 
   // Setup input variables
   // @isHastyDriver - will use triangles instead of trapezoids
   private void SetupFuzzySets(bool isHastyDriver) {
 
     // Linguistic labels (MFs) that compose the input velocity
-    FuzzySet fsLargeLeftVelocityInput = new FuzzySet("LargeLeft",
-        new TrapezoidalFunction(-4.0f, -2.75f, TrapezoidalFunction.EdgeType.Right));
-    FuzzySet fsLeftVelocityInput = new FuzzySet("Left",
-        new TrapezoidalFunction(-3.5f, -2.2f, -0.8f, 0.0f));
+    FuzzySet fsLargeLeftVelocityInput = new FuzzySet("LargeRight",
+        new TrapezoidalFunction(-8.0f, -4.5f, TrapezoidalFunction.EdgeType.Right));
+    FuzzySet fsLeftVelocityInput = new FuzzySet("Right",
+        new TrapezoidalFunction(-5.0f, -4.4f, -1.6f, 0.0f));
     FuzzySet fsZeroVelocityInput = new FuzzySet("Zero",
         new TrapezoidalFunction(-0.4f, 0.0f, 0.4f));
-    FuzzySet fsRightVelocityInput = new FuzzySet("Right",
-        new TrapezoidalFunction(0.0f, 0.8f, 2.2f, 3.5f));
-    FuzzySet fsLargeRightVelocityInput = new FuzzySet("LargeRight",
-        new TrapezoidalFunction(2.75f, 4.0f, TrapezoidalFunction.EdgeType.Left));
-    
+    FuzzySet fsRightVelocityInput = new FuzzySet("Left",
+        new TrapezoidalFunction(0.0f, 1.6f, 4.4f, 5.0f));
+    FuzzySet fsLargeRightVelocityInput = new FuzzySet("LargeLeft",
+        new TrapezoidalFunction(4.5f, 8.0f, TrapezoidalFunction.EdgeType.Left));
+
     // Fuzzy set - Input Velocity
-    LinguisticVariable lvInputVelocity = new LinguisticVariable("InputVelocity", -5.0f, 5.0f);
+    LinguisticVariable lvInputVelocity = new LinguisticVariable("InputVelocity", -10.0f, 10.0f);
     lvInputVelocity.AddLabel(fsLargeLeftVelocityInput);
     lvInputVelocity.AddLabel(fsLeftVelocityInput);
     lvInputVelocity.AddLabel(fsZeroVelocityInput);
@@ -77,18 +68,30 @@ public class CarInferenceSystem : MonoBehaviour {
 
     // Linguistic labels (MFs) that compose the output velocity
     FuzzySet fsLargeLeftVelocityOutput = new FuzzySet("LargeLeftOutput",
-        new TrapezoidalFunction(-9.0f, -4.2f, TrapezoidalFunction.EdgeType.Right));
+        new TrapezoidalFunction(-8.0f, -4.2f, TrapezoidalFunction.EdgeType.Right));
     FuzzySet fsLeftVelocityOutput = new FuzzySet("LeftOutput",
         new TrapezoidalFunction(-6.0f, -3.0f, 0.0f));
     FuzzySet fsZeroVelocityOutput = new FuzzySet("ZeroOutput",
-        new TrapezoidalFunction(-1.75f, 0.0f, 1.75f));
+        new TrapezoidalFunction(-1.0f, 0.0f, 1.0f));
     FuzzySet fsRightVelocityOutput = new FuzzySet("RightOutput",
         new TrapezoidalFunction(0.0f, 3.0f, 6.0f));
     FuzzySet fsLargeRightVelocityOutput = new FuzzySet("LargeRightOutput",
-        new TrapezoidalFunction(4.2f, 9.0f, TrapezoidalFunction.EdgeType.Left));
+        new TrapezoidalFunction(4.2f, 8.0f, TrapezoidalFunction.EdgeType.Left));
+    if (isHastyDriver) {
+      fsLargeLeftVelocityOutput = new FuzzySet("LargeLeftOutput",
+        new TrapezoidalFunction(-7.0f, -5.2f, TrapezoidalFunction.EdgeType.Right));
+      fsLeftVelocityOutput = new FuzzySet("LeftOutput",
+       new TrapezoidalFunction(-6.0f, -5.0f, -1.0f, 0.0f));
+      fsZeroVelocityOutput = new FuzzySet("ZeroOutput",
+          new TrapezoidalFunction(-1.0f, 0.0f, 1.0f));
+      fsRightVelocityOutput = new FuzzySet("RightOutput",
+          new TrapezoidalFunction(0.0f, 1.0f, 5.0f, 6.0f));
+      fsLargeRightVelocityOutput = new FuzzySet("LargeRightOutput",
+        new TrapezoidalFunction(5.2f, 7.0f, TrapezoidalFunction.EdgeType.Left));
+    }
 
     // Fuzzy set - Output Velocity
-    float boundary = (isHastyDriver) ? 16.0f : 10.0f;
+    float boundary = (isHastyDriver) ? 10.0f : 8.0f;
     LinguisticVariable lvOutputVelocity = new LinguisticVariable("OutputVelocity", -boundary, boundary);
     lvOutputVelocity.AddLabel(fsLargeLeftVelocityOutput);
     lvOutputVelocity.AddLabel(fsLeftVelocityOutput);
@@ -149,18 +152,12 @@ public class CarInferenceSystem : MonoBehaviour {
   // --- Public Functions --- //
 
   public void SetInput(float distance, float velocity) {
-    this.distance = distance;
-    this.velocity = velocity;
-
     IS.SetInput("InputVelocity", velocity);
     IS.SetInput("InputDistance", distance);
   }
 
   public float CalculateOutput() {
     float output = IS.Evaluate("OutputVelocity");
-
-    // Just for now
-   // float output = -distance / 5;
 
     return output;
   }

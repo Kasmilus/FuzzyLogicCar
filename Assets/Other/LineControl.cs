@@ -17,11 +17,14 @@ public class LineControl : MonoBehaviour {
   public float speedMin = 1;
   public float speedMax = 15;
 
+  public float deltaSpeed;
+
   // --- Private: --- //
   // Default speed
   private float speed = 10;
   private Vector3 lastMousePos;
   private bool wasMousePressed;
+
   //Spawning new lines
   private Vector3 spawnPos;
   private float timer;
@@ -34,6 +37,7 @@ public class LineControl : MonoBehaviour {
   }
 
   void Update () {
+    deltaSpeed = 0;
 
     timer += Time.deltaTime;
     if(timer > 0.4f) {
@@ -67,11 +71,13 @@ public class LineControl : MonoBehaviour {
     float inputHor = Input.GetAxis("Horizontal");
     if (inputHor != 0) {
       transform.position += new Vector3(inputHor * Time.deltaTime * speed, 0, 0);
+      deltaSpeed = inputHor * Time.deltaTime * speed;
     }
 
     if (Input.GetMouseButton(0)) {
       if(Input.mousePosition != lastMousePos && wasMousePressed) {
         transform.position += new Vector3((Input.mousePosition - lastMousePos).x * Time.deltaTime, 0, 0);
+        deltaSpeed = (Input.mousePosition - lastMousePos).x * Time.deltaTime;
       }
       lastMousePos = Input.mousePosition;
     }

@@ -17,7 +17,6 @@ public class CarMovement : MonoBehaviour {
   // Control variables
   private float distance;
   private float velocity;
-  private float lastFramePosX;
 
   private float timer;
 
@@ -38,8 +37,8 @@ public class CarMovement : MonoBehaviour {
       distance = -distance;
 
     // Velocity
-    velocity = (transform.position.x - lastFramePosX);
-    lastFramePosX = transform.position.x;
+    velocity = FindObjectOfType<LineControl>().deltaSpeed;
+    velocity /= Time.smoothDeltaTime;
 
     // Pass variables to FIS
     carIS.SetInput(distance, velocity);
@@ -47,6 +46,7 @@ public class CarMovement : MonoBehaviour {
 
     // Move car
     transform.position += new Vector3(response * Time.deltaTime, 0, 0);
+
 
     // UI
     if (timer > 0.15) {
